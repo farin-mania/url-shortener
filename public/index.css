@@ -8,6 +8,35 @@ header {
 #login-section {
     display: flex;
     justify-content: center;
+    gap: 2rem;
+}
+
+#login-container {
+    display: none;
+}
+
+#shortener-container {
+    display: none;
+    text-align: center;
+}
+
+#shortener-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#result {
+    margin-top: 1rem;
+}
+
+#links-table {
+    margin: 1rem auto;
+    border-collapse: collapse;
+}
+
+#logout-btn {
+    margin-top: 2rem;
 }
 
 .form {

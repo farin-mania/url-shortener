@@ -5,6 +5,7 @@ import cors from "cors";
 import session from "express-session";
 import bcrypt from "bcrypt";
 import { requireAuth } from "./services/middleware.js";
+import crypto from "crypto";
 
 const PORT = 3000;
 const app = express();
@@ -34,7 +35,8 @@ app.post("/api/login", async (req, res) => {
     const { email, password } = req.body;
 
     const user = await getUserByEmail(email);
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    console.log(user);
+    if (!user || !(await bcrypt.compare(password, user.passord))) {
         return res.status(401).json({
             error: "Invalid credentials"
         });
@@ -66,7 +68,46 @@ app.post("/api/register", async (req, res) => {
 
 app.get("/api/me", requireAuth, async (req, res) => {
     const user = await getUserById(req.session.userId);
-    return user;
+    return res.json({
+        email: user.epost,
+        brukernavn: user.brukernavn
+    });
+})
+
+app.get("/api/links", requireAuth, async (req, res) => {
+    const links = db.prepare("SELECT * FROM links WHERE bruker_id = ?").all(req.session.userId);
+    return res.json(links);
+});
+
+app.post("/api/shorten", requireAuth, async (req, res) => {
+    const { url } = req.body;
+
+    const shortened = crypto.randomBytes(4).toString("hex");
+
+    const insert = db.prepare("INSERT INTO links (bruker_id, original_url, shortened_url) VALUES (?, ?, ?)");
+    insert.run(req.session.userId, url, shortened);
+
+    return res.json({
+        shortUrl: `http://localhost:${PORT}/${shortened}`
+    });
+});
+
+app.get("/:code", async (req, res) => {
+    const link = db.prepare("SELECT * FROM links WHERE shortened_url = ?").get(req.params.code);
+    if (!link) {
+        return res.status(404).send("Ikke funnet");
+    }
+    return res.redirect(link.original_url);
+});
+
+app.post("/api/logout", requireAuth, async (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return console.log(err);
+        }
+    });
+
+    return res.json({ ok: true });
 })
 
 app.listen(PORT, () => {

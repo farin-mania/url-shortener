@@ -9,6 +9,7 @@ export const getUserByEmail = async (email) => {
 
 export const getUserById = async (id) => {
     const user = await db.prepare("SELECT * FROM brukere WHERE bruker_id = ?").get(id);
+    console.log(user)
 
     return user;
 }

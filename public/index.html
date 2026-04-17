@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>URL Shortener</title>
     <link rel="stylesheet" href="index.css">
     <script src="index.js" defer></script>
 </head>
@@ -17,17 +17,47 @@
         </h1>
     </header>
 
-    <section id="login-section">
-        <form class="form" id="registrer">
-            <label for="email">Epost</label>
-            <input type="email" id="email" name="email">
-            <label for="brukernavn">Brukernavn</label>
-            <input type="text" id="brukernavn" name="brukernavn">
-            <label for="password">Passord</label>
-            <input type="password" id="password" name="password">
-            <button type="submit"> Registrer</button>
-        </form>
-    </section>
+    <div id="login-container">
+        <section id="login-section">
+            <form class="form" id="login">
+                <h3>Logg inn</h3>
+                <label for="login-email">Epost</label>
+                <input type="email" id="login-email" name="email">
+                <label for="login-password">Passord</label>
+                <input type="password" id="login-password" name="password">
+                <button type="submit">Logg inn</button>
+            </form>
+
+            <form class="form" id="registrer">
+                <h3>Registrer</h3>
+                <label for="email">Epost</label>
+                <input type="email" id="email" name="email">
+                <label for="brukernavn">Brukernavn</label>
+                <input type="text" id="brukernavn" name="brukernavn">
+                <label for="password">Passord</label>
+                <input type="password" id="password" name="password">
+                <button type="submit">Registrer</button>
+            </form>
+        </section>
+    </div>
+
+    <div id="shortener-container">
+        <section id="shortener-section">
+            <p id="welcome-msg"></p>
+            <form class="form" id="shorten-form">
+                <label for="url">Lim inn URL</label>
+                <input type="url" id="url" name="url" placeholder="https://example.com">
+                <button type="submit">Forkort</button>
+            </form>
+            <div id="result"></div>
+        </section>
+        <h3>Dine lenker</h3>
+        <table id="links-table" border="1">
+            <tr><th>Original URL</th><th>Kort URL</th></tr>
+        </table>
+        <button id="logout-btn">Logg ut</button>
+    </div>
+
 </body>
 
 </html>
