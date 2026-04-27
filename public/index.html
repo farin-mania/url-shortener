@@ -47,13 +47,19 @@
             <form class="form" id="shorten-form">
                 <label for="url">Lim inn URL</label>
                 <input type="url" id="url" name="url" placeholder="https://example.com">
+                <label>Skriv inn alias (optional)</label>
+                <input type="text" id="alias" name="alias"></input>
                 <button type="submit">Forkort</button>
             </form>
             <div id="result"></div>
         </section>
         <h3>Dine lenker</h3>
         <table id="links-table" border="1">
-            <tr><th>Original URL</th><th>Kort URL</th></tr>
+            <tr>
+                <th>Original URL</th>
+                <th>Kort URL</th>
+                <th>Antall Klikk</th>
+            </tr>
         </table>
         <button id="logout-btn">Logg ut</button>
     </div>

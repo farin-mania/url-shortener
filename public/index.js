@@ -94,11 +94,11 @@ const loadLinks = async () => {
     if (!res.ok) return;
     const links = await res.json();
 
-    linksTable.innerHTML = "<tr><th>Original URL</th><th>Kort URL</th></tr>";
+    linksTable.innerHTML = "<tr><th>Original URL</th><th>Kort URL</th><th>Antall Klikk</th></tr>";
     for (const link of links) {
         const shortUrl = `http://localhost:3000/${link.shortened_url}`;
         const row = document.createElement("tr");
-        row.innerHTML = `<td>${link.original_url}</td><td><a href="${shortUrl}">${shortUrl}</a></td>`;
+        row.innerHTML = `<td>${link.original_url}</td><td><a href="${shortUrl}">${shortUrl}</a></td><td>${link.totalClicks}</td>`;
         linksTable.appendChild(row);
     }
 }

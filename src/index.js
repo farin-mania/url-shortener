@@ -6,6 +6,7 @@ import session from "express-session";
 import bcrypt from "bcrypt";
 import { requireAuth } from "./services/middleware.js";
 import crypto from "crypto";
+import { documentClick, getTotalClicks } from "./services/metrics.js";
 
 const PORT = 3000;
 const app = express();
@@ -76,6 +77,13 @@ app.get("/api/me", requireAuth, async (req, res) => {
 
 app.get("/api/links", requireAuth, async (req, res) => {
     const links = db.prepare("SELECT * FROM links WHERE bruker_id = ?").all(req.session.userId);
+
+
+    for (const link of links) {
+        const totalClicks = getTotalClicks(link.link_id);
+        link.totalClicks = totalClicks;
+    }
+
     return res.json(links);
 });
 
@@ -97,6 +105,12 @@ app.get("/:code", async (req, res) => {
     if (!link) {
         return res.status(404).send("Ikke funnet");
     }
+    const ip = req.ip;
+    console.log(ip, link)
+    documentClick(ip, link.link_id);
+    getTotalClicks(link.link_id);
+
+
     return res.redirect(link.original_url);
 });
 
